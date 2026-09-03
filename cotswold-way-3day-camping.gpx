@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="Cotswold Way planner" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
-<metadata><name>Cotswold Way — 4 days, camping</name></metadata>
+<metadata><name>Cotswold Way — 3 days, camping</name></metadata>
 <wpt lat="51.745934" lon="-2.279421"><ele>0.0</ele><name>ARRIVE — Stonehouse station (SHU)</name><desc>15 min walk to the path at Ryeford</desc><sym>Car</sym></wpt>
 <wpt lat="51.377602" lon="-2.356719"><ele>0.0</ele><name>Bath Spa station (BTH)</name><desc>Finish. 0.3 mi from the Abbey.</desc><sym>Car</sym></wpt>
 <wpt lat="51.741086" lon="-2.271725"><ele>38.1</ele><name>START — Stonehouse</name><desc>47.3 mi to Bath</desc><sym>Lodging</sym></wpt>
 <wpt lat="51.659917" lon="-2.376628"><ele>121.8</ele><name>NIGHT 1 — North Nibley</name><desc>34.3 mi to Bath</desc><sym>Lodging</sym></wpt>
-<wpt lat="51.556841" lon="-2.345416"><ele>149.9</ele><name>NIGHT 2 — Horton</name><desc>21.6 mi to Bath</desc><sym>Lodging</sym></wpt>
-<wpt lat="51.429850" lon="-2.393226"><ele>199.9</ele><name>NIGHT 3 — Lansdown</name><desc>7.9 mi to Bath</desc><sym>Lodging</sym></wpt>
+<wpt lat="51.508025" lon="-2.339228"><ele>170.8</ele><name>NIGHT 2 — Tormarton</name><desc>17.1 mi to Bath</desc><sym>Lodging</sym></wpt>
 <wpt lat="51.381368" lon="-2.359475"><ele>31.5</ele><name>FINISH — Bath Abbey</name><desc>0.0 mi to Bath</desc><sym>Lodging</sym></wpt>
 <wpt lat="51.686585" lon="-2.379232"><ele>198.0</ele><name>CAMP: Ashen Plains</name><desc>1.2 km off the path, 37.3 mi to Bath. ~£20 a pitch</desc><sym>Campground</sym></wpt>
 <wpt lat="51.659917" lon="-2.376628"><ele>121.8</ele><name>CAMP: Hunts Court</name><desc>500 m off the path, 34.3 mi to Bath. £12 each</desc><sym>Campground</sym></wpt>
@@ -750,7 +749,7 @@
 <trkpt lat="51.660052" lon="-2.376622"><ele>120.7</ele></trkpt>
 <trkpt lat="51.659917" lon="-2.376628"><ele>121.6</ele></trkpt>
 </trkseg></trk>
-<trk><name>Cotswold Way Day 2 — North Nibley to Horton</name><desc>12.8 mi, +457 m / -427 m. 6 hrs</desc><trkseg>
+<trk><name>Cotswold Way Day 2 — North Nibley to Tormarton</name><desc>17.2 mi, +598 m / -550 m. 8-9 hrs</desc><trkseg>
 <trkpt lat="51.659663" lon="-2.376653"><ele>123.1</ele></trkpt>
 <trkpt lat="51.659391" lon="-2.376694"><ele>124.4</ele></trkpt>
 <trkpt lat="51.659357" lon="-2.376545"><ele>124.9</ele></trkpt>
@@ -1412,8 +1411,6 @@
 <trkpt lat="51.556756" lon="-2.344431"><ele>155.5</ele></trkpt>
 <trkpt lat="51.556827" lon="-2.345253"><ele>150.2</ele></trkpt>
 <trkpt lat="51.556841" lon="-2.345416"><ele>150.0</ele></trkpt>
-</trkseg></trk>
-<trk><name>Cotswold Way Day 3 — Horton to Lansdown</name><desc>13.7 mi, +426 m / -379 m. 6-7 hrs</desc><trkseg>
 <trkpt lat="51.556604" lon="-2.345415"><ele>149.9</ele></trkpt>
 <trkpt lat="51.556378" lon="-2.345329"><ele>150.2</ele></trkpt>
 <trkpt lat="51.556264" lon="-2.345318"><ele>150.1</ele></trkpt>
@@ -1638,6 +1635,8 @@
 <trkpt lat="51.509421" lon="-2.342895"><ele>169.5</ele></trkpt>
 <trkpt lat="51.508978" lon="-2.341731"><ele>169.3</ele></trkpt>
 <trkpt lat="51.508432" lon="-2.340294"><ele>171.3</ele></trkpt>
+</trkseg></trk>
+<trk><name>Cotswold Way Day 3 — Tormarton to Bath</name><desc>17.1 mi, +468 m / -604 m. 8 hrs</desc><trkseg>
 <trkpt lat="51.508025" lon="-2.339228"><ele>170.5</ele></trkpt>
 <trkpt lat="51.507988" lon="-2.339193"><ele>170.5</ele></trkpt>
 <trkpt lat="51.507954" lon="-2.339157"><ele>170.4</ele></trkpt>
@@ -2016,8 +2015,6 @@
 <trkpt lat="51.430035" lon="-2.392528"><ele>198.3</ele></trkpt>
 <trkpt lat="51.429890" lon="-2.393014"><ele>199.4</ele></trkpt>
 <trkpt lat="51.429850" lon="-2.393226"><ele>199.8</ele></trkpt>
-</trkseg></trk>
-<trk><name>Cotswold Way Day 4 — Lansdown to Bath</name><desc>7.9 mi, +180 m / -345 m. 3-4 hrs</desc><trkseg>
 <trkpt lat="51.429766" lon="-2.394564"><ele>204.8</ele></trkpt>
 <trkpt lat="51.429727" lon="-2.395010"><ele>206.7</ele></trkpt>
 <trkpt lat="51.429707" lon="-2.395386"><ele>207.9</ele></trkpt>

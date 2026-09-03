@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Camping the Cotswold Way — 4 days</title>
-<meta name="description" content="Stroud to Bath in four days with three nights camping: interactive map, height profile, campsites, historic sites and trains.">
-<link rel="canonical" href="https://hasselmyr.github.io/cotswold-way/">
-<meta property="og:title" content="Camping the Cotswold Way — 4 days">
-<meta property="og:description" content="Stroud to Bath in four days with three nights camping: interactive map, height profile, campsites, historic sites and trains.">
-<meta property="og:url" content="https://hasselmyr.github.io/cotswold-way/">
+<title>Camping the Cotswold Way — 3 days</title>
+<meta name="description" content="Stroud to Bath in three days with two nights camping: interactive map, height profile, campsites and trains.">
+<link rel="canonical" href="https://hasselmyr.github.io/cotswold-way/3-day/">
+<meta property="og:title" content="Camping the Cotswold Way — 3 days">
+<meta property="og:description" content="Stroud to Bath in three days with two nights camping: interactive map, height profile, campsites and trains.">
+<meta property="og:url" content="https://hasselmyr.github.io/cotswold-way/3-day/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ctext y=%2226%22 font-size=%2226%22%3E%F0%9F%A5%BE%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -235,7 +235,7 @@ footer p+p{margin-top:.45rem}
 
   <nav class="switch" aria-label="Choose how many days">
     <span class="lbl">Length</span>
-    <a class="vbtn" href="2-day/">2 days</a><a class="vbtn" href="3-day/">3 days</a><a class="vbtn" href="./" aria-current="page" aria-pressed="true">4 days</a>
+    <a class="vbtn" href="../2-day/">2 days</a><a class="vbtn" href="../3-day/" aria-current="page" aria-pressed="true">3 days</a><a class="vbtn" href="../">4 days</a>
   </nav>
   <p id="vsub"></p>
 
@@ -279,7 +279,7 @@ footer p+p{margin-top:.45rem}
     <div class="legend" id="legend"></div>
   </div>
 
-  <p class="gpxline"><a href="cotswold-way-4day-camping.gpx" download>Download the route as GPX</a>
+  <p class="gpxline"><a href="../cotswold-way-3day-camping.gpx" download>Download the route as GPX</a>
     &mdash; four tracks, one per day, with every campsite, station and climb as a waypoint. Loads into OS Maps, Komoot or Garmin.</p>
 
   <div class="profwrap">
@@ -372,7 +372,7 @@ footer p+p{margin-top:.45rem}
   function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
   function pop(t,s,b){ return '<span class="pop-h">'+esc(t)+'</span>'+(s?'<span class="pm">'+esc(s)+'</span><br>':'')+(b?esc(b):''); }
   var ORD=['one','two','three','four'];
-  var ACTIVE='v4';
+  var ACTIVE='v3';
 
   // Leaflet defers every layer until the map has a view; without an initial centre/zoom the
   // SVG renderer can initialise after the paths that depend on it and no vectors ever draw.

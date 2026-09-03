@@ -383,6 +383,11 @@ footer p+p{margin-top:.45rem}
   }
   function col(i){ return dark()?COLD[i%4]:COL[i%4]; }
   function warn(){ return dark()?'#E8A33D':'#B26A00'; }
+  // The dark-theme day colours are light, so white text on them fails contrast
+  // (measured 2.3-3.3:1). Dark ink on the same swatches measures 5.5-7.8:1.
+  function fg(){ return dark()?'#141712':'#FFFFFF'; }
+  // Days are also distinguished without colour, for readers who cannot separate the hues.
+  var DASH=[null,'18 5','4 5','22 5 4 5'];
   function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
   function pop(t,s,b){ return '<span class="pop-h">'+esc(t)+'</span>'+(s?'<span class="pm">'+esc(s)+'</span><br>':'')+(b?esc(b):''); }
@@ -500,7 +505,8 @@ footer p+p{margin-top:.45rem}
     V.days.forEach(function(d,i){
       var pts=slice(d.from_mi, d.to_mi);
       casings.push(L.polyline(pts,{color:'#FFFFFF',weight:8,opacity:.95,lineJoin:'round'}).addTo(map));
-      lines.push(L.polyline(pts,{color:col(i),weight:4.5,lineJoin:'round'}).addTo(map));
+      lines.push(L.polyline(pts,{color:col(i),weight:4.5,lineJoin:'round',
+        dashArray:DASH[i%4], lineCap:'butt'}).addTo(map));
       dayBounds.push(L.latLngBounds(pts));
     });
     shown = V.days.map(function(){ return true; });
@@ -508,7 +514,8 @@ footer p+p{margin-top:.45rem}
       var last = i===V.stops.length-1;
       var c = last ? '#1A1D18' : col(Math.min(i,V.days.length-1));
       var ic=L.divIcon({className:'', iconSize:[26,26], iconAnchor:[13,13],
-        html:'<div class="mk-stop" style="width:26px;height:26px;background:'+c+'">'+esc(s.lab)+'</div>'});
+        html:'<div class="mk-stop" style="width:26px;height:26px;background:'+c+';color:'+
+             (last?'#FFFFFF':fg())+'">'+esc(s.lab)+'</div>'});
       var body = s.lab==='S' ? 'Start.' : (last ? 'Finish at Bath Abbey. Bath Spa station is 0.3 mi further.' : 'Night '+s.lab+'.');
       L.marker(latlngAt(s.mi),{icon:ic,zIndexOffset:600}).addTo(Gstop)
         .bindPopup(pop(s.name, s.mi.toFixed(1)+' mi to Bath', body));
@@ -584,8 +591,8 @@ footer p+p{margin-top:.45rem}
   function renderDayStrip(){
     var host=document.getElementById('daystrip'); if(!host) return;
     host.innerHTML = V.days.map(function(d,i){
-      return '<div class="seg" style="flex-grow:'+d.mi.toFixed(2)+';background:'+col(i)+'" '+
-             'title="'+esc(d.from)+' to '+esc(d.to)+', +'+d.up+' m">'+
+      return '<div class="seg" style="flex-grow:'+d.mi.toFixed(2)+';background:'+col(i)+
+             ';color:'+fg()+'" title="'+esc(d.from)+' to '+esc(d.to)+', +'+d.up+' m">'+
              '<span class="lab">Day '+(i+1)+'</span>'+
              '<span class="val">'+d.mi.toFixed(1)+' mi</span>'+
              '<span class="sub">+'+d.up+' m &middot; '+esc(d.hours)+'</span></div>';
@@ -649,7 +656,7 @@ footer p+p{margin-top:.45rem}
       var art=document.createElement('article');
       art.className='dayrow';
       art.innerHTML=
-        '<div class="dayhead"><span class="dnum" style="background:'+c+'">'+(i+1)+'</span>'+
+        '<div class="dayhead"><span class="dnum" style="background:'+c+';color:'+fg()+'">'+(i+1)+'</span>'+
           '<h3>'+esc(d.from)+' to '+esc(d.to)+'</h3>'+
           '<span class="dstats">'+
             '<span style="background:'+c+'22">'+d.mi.toFixed(1)+' mi</span>'+
@@ -693,12 +700,20 @@ footer p+p{margin-top:.45rem}
       b.setAttribute('aria-pressed', on?'true':'false');
       b.style.background = on ? col(i) : 'transparent';
       b.style.borderColor = on ? col(i) : css('--rule');
-      b.style.color = on ? '#fff' : css('--body');
+      b.style.color = on ? fg() : css('--body');
     });
   }
   function drawLegend(){
     var h='';
-    V.days.forEach(function(d,i){ h+='<span><i class="sw" style="background:'+col(i)+'"></i> Day '+(i+1)+'</span>'; });
+    V.days.forEach(function(d,i){
+      // mirror the map's dash pattern so the legend keys on shape as well as colour
+      var c=col(i), d0=DASH[i%4], style;
+      if(d0){
+        var on=Math.max(2,Math.round(Number(d0.split(' ')[0])/3)), off=2;
+        style='background:repeating-linear-gradient(90deg,'+c+' 0 '+on+'px,transparent '+on+'px '+(on+off)+'px)';
+      } else { style='background:'+c; }
+      h+='<span><i class="sw" style="'+style+'"></i> Day '+(i+1)+'</span>';
+    });
     h+='<span><i class="swd"></i> Diversion</span>'+
        '<span><i class="poimk"></i> Worth seeing</span>'+
        '<span><i class="tentmk"></i> Campsite</span>'+

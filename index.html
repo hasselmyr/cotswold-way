@@ -90,6 +90,12 @@ h1{font-weight:800; font-size:clamp(2.3rem,6.4vw,4.2rem); line-height:1; letter-
   color:var(--alert); margin:0 0 .45rem}
 .alert p{margin:0; font-size:.95rem; max-width:80ch}
 .alert p+p{margin-top:.5rem}
+.divdays{list-style:none; margin:.7rem 0 0; padding:0}
+.divdays li{font-size:.9rem; padding:.28rem 0 .28rem .95rem; position:relative}
+.divdays li::before{content:""; position:absolute; left:0; top:.72rem; width:.42rem; height:.42rem;
+  border-radius:50%; background:var(--warn)}
+.divdays b{color:var(--ink)}
+.divfoot{margin-top:.7rem!important; font-size:.9rem!important; opacity:.85}
 
 section{padding:clamp(2.5rem,5vw,3.75rem) 0}
 .sec-head{display:flex; align-items:baseline; gap:1rem; border-bottom:2px solid var(--ink);
@@ -252,6 +258,8 @@ footer p+p{margin-top:.45rem}
     <h2>Emergency closure near Wortley &mdash; check before booking</h2>
     <p>National Trails posted an emergency closure order for a section near <b>Wortley</b> on 3 September 2026, after drought and high winds. Wortley is at mile 28, between Wotton-under-Edge and Hawkesbury Upton, and it falls on every version of this walk. The notice says a diversion will be in place and that details are to follow; as of the last check nothing further had been published.</p>
     <p>It is marked in amber on the map and on the profile, along with the two standing diversions at North Nibley and Beacon Lane Plantation. The Wortley band is approximate, because the extent has not been given. Ring the trail team on <span class="mono">07841 663607</span> or email <span class="mono">cotswoldway@cotswolds-nl.org.uk</span>.</p>
+    <ul class="divdays" id="divdays"></ul>
+    <p class="divfoot">Not this walk: the <b>A417 Birdlip diversion</b>, in place since 3 July 2026 for at least six months, is on the Cotswold Way near Crickley Hill &mdash; about 63&ndash;65 miles from Bath, so roughly 16 miles north of Stonehouse. It does not touch any version of this route.</p>
   </div>
 </header>
 
@@ -498,7 +506,7 @@ footer p+p{margin-top:.45rem}
         .bindPopup(pop(s.name, s.mi.toFixed(1)+' mi to Bath', body));
     });
     drawArrival();
-    buildDayButtons(); renderStats(); renderDays(); renderAccess(); markNights(); drawLegend(); redraw();
+    buildDayButtons(); renderStats(); renderDays(); renderAccess(); markNights(); renderDivDays(); drawLegend(); redraw();
     if(fit!==false) fitTo(whole());
   }
   function whole(){
@@ -545,6 +553,25 @@ footer p+p{margin-top:.45rem}
         tr.querySelector('td:nth-child(2)').appendChild(t);
       } else if(!used && tag){ tag.remove(); }
     });
+  }
+  function renderDivDays(){
+    var host=document.getElementById('divdays'); if(!host) return;
+    var out=D.diversions.map(function(dv){
+      if(dv.mi>V.start_mi+0.02) return null;   // north of where this plan starts
+      for(var i=0;i<V.days.length;i++){
+        var d=V.days[i];
+        if(dv.mi<=d.from_mi+0.02 && dv.mi>=d.to_mi-0.02){
+          var into=d.from_mi-dv.mi;
+          var where = into<0.15 ? 'right at the start of <b>Day '+(i+1)+'</b>'
+                    : (d.mi-into)<0.15 ? 'right at the end of <b>Day '+(i+1)+'</b>'
+                    : 'on <b>Day '+(i+1)+'</b>, about '+into.toFixed(1)+' mi into a '+d.mi.toFixed(1)+' mi day';
+          return '<li><b>'+esc(dv.name)+'</b> falls '+where+' ('+esc(d.from)+' to '+esc(d.to)+').</li>';
+        }
+      }
+      return null;
+    }).filter(Boolean);
+    host.innerHTML = out.join('') ||
+      '<li>None of the current diversions fall on this itinerary.</li>';
   }
   function renderStats(){
     document.getElementById('s-dist').innerHTML = V.total.toFixed(1)+' <small>mi</small>';

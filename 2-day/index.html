@@ -84,7 +84,15 @@ h1{font-weight:800; font-size:clamp(2.3rem,6.4vw,4.2rem); line-height:1; letter-
   font-size:1.35rem; font-weight:500; color:var(--ink); letter-spacing:-.02em}
 .rail dd small{font-size:.76rem; color:var(--muted); font-weight:400}
 
-.alert{margin:2rem 0 0; padding:1.05rem 1.25rem 1.15rem; background:var(--alert-bg);
+.daystrip{display:flex; flex-wrap:wrap; gap:3px; margin:1rem 0 0}
+.daystrip .seg{flex:1 1 auto; min-width:6.5rem; border-radius:3px; padding:.5rem .7rem; color:#fff;
+  display:flex; flex-direction:column; gap:.12rem}
+.daystrip .seg .lab{font-family:Archivo,sans-serif; font-size:.6rem; letter-spacing:.14em;
+  text-transform:uppercase; font-weight:700; opacity:.85}
+.daystrip .seg .val{font-family:"IBM Plex Mono",monospace; font-size:1.02rem; font-weight:600;
+  font-variant-numeric:tabular-nums}
+.daystrip .seg .sub{font-family:"IBM Plex Mono",monospace; font-size:.68rem; opacity:.8}
+.alert{margin:1.4rem 0 0; padding:1.05rem 1.25rem 1.15rem; background:var(--alert-bg);
   border:1px solid var(--alert-rule); border-left:5px solid var(--alert); border-radius:3px}
 .alert h2{font-size:.82rem; letter-spacing:.09em; text-transform:uppercase; font-weight:800;
   color:var(--alert); margin:0 0 .45rem}
@@ -248,11 +256,13 @@ footer p+p{margin-top:.45rem}
   <dl class="rail">
     <div><dt>Distance</dt><dd id="s-dist">&mdash;</dd></div>
     <div><dt>Ascent</dt><dd id="s-asc">&mdash;</dd></div>
-    <div><dt>Walking days</dt><dd id="s-days">&mdash;</dd></div>
+    <div><dt>Day lengths</dt><dd id="s-days">&mdash;</dd></div>
     <div><dt>Longest day</dt><dd id="s-long">&mdash;</dd></div>
     <div><dt>Nights camping</dt><dd id="s-nights">&mdash;</dd></div>
     <div><dt>Start</dt><dd id="s-start">&mdash;</dd></div>
   </dl>
+
+  <div class="daystrip" id="daystrip"></div>
 
   <div class="alert">
     <h2>Emergency closure near Wortley &mdash; check before booking</h2>
@@ -346,13 +356,7 @@ footer p+p{margin-top:.45rem}
 
 <section>
   <div class="sec-head"><h2>Calls to make first</h2></div>
-  <ul class="check">
-    <li><b>Trail team, about Wortley.</b> <span class="mono">07841 663607</span>. The diversion may add distance, and it falls on every version of this walk.</li>
-    <li><b>The Compass Inn, if you pick 2 or 3 days.</b> <span class="mono">01454 218242</span>. Both shorter versions depend on it taking tents; there is no other pitch between Horton and Lansdown.</li>
-    <li><b>Hunts Court &mdash; four pitches for how many of you?</b> <span class="mono">01453 544632</span>. The tightest bottleneck on the route.</li>
-    <li><b>Lansdown Campsite &mdash; is the tent field open on your dates?</b> <span class="mono">07534 894999</span>. Only matters for the four-day version.</li>
-    <li><b>Horton &mdash; Starvale or Hideaway.</b> <span class="mono">07786 962913</span> / <span class="mono">07808 912788</span>. Confirm they are trading before planning a day that ends there.</li>
-  </ul>
+  <ul class="check" id="calls"></ul>
 </section>
 
 <footer>
@@ -510,7 +514,7 @@ footer p+p{margin-top:.45rem}
         .bindPopup(pop(s.name, s.mi.toFixed(1)+' mi to Bath', body));
     });
     drawArrival();
-    buildDayButtons(); renderStats(); renderDays(); renderAccess(); markNights(); renderDivDays(); drawLegend(); redraw();
+    buildDayButtons(); renderStats(); renderDayStrip(); renderDays(); renderAccess(); markNights(); renderDivDays(); renderCalls(); drawLegend(); redraw();
     if(fit!==false) fitTo(whole());
   }
   function whole(){
@@ -577,10 +581,54 @@ footer p+p{margin-top:.45rem}
     host.innerHTML = out.join('') ||
       '<li>None of the current diversions fall on this itinerary.</li>';
   }
+  function renderDayStrip(){
+    var host=document.getElementById('daystrip'); if(!host) return;
+    host.innerHTML = V.days.map(function(d,i){
+      return '<div class="seg" style="flex-grow:'+d.mi.toFixed(2)+';background:'+col(i)+'" '+
+             'title="'+esc(d.from)+' to '+esc(d.to)+', +'+d.up+' m">'+
+             '<span class="lab">Day '+(i+1)+'</span>'+
+             '<span class="val">'+d.mi.toFixed(1)+' mi</span>'+
+             '<span class="sub">+'+d.up+' m &middot; '+esc(d.hours)+'</span></div>';
+    }).join('');
+  }
+  function renderCalls(){
+    var host=document.getElementById('calls'); if(!host) return;
+    var uses=function(n){ return V.nights_at.indexOf(n)>=0; };
+    var wortleyDay=(function(){
+      for(var i=0;i<V.days.length;i++){
+        var d=V.days[i];
+        if(28.32<=d.from_mi+0.02 && 28.32>=d.to_mi-0.02) return 'Day '+(i+1)+' of this plan';
+      }
+      return 'this route';
+    })();
+    var items=[];
+    items.push('<b>Trail team, about Wortley.</b> <span class="mono">07841 663607</span>. It falls on '+
+      wortleyDay+', and the extent still has not been published.');
+    if(uses('The Compass Inn'))
+      items.push('<b>The Compass Inn, Tormarton.</b> <span class="mono">01454 218242</span>. This plan '+
+        'depends on it taking tents &mdash; there is no other pitch between Horton and Lansdown, so if '+
+        'they say no this version does not exist.');
+    if(uses('Hunts Court'))
+      items.push('<b>Hunts Court &mdash; four pitches for how many of you?</b> '+
+        '<span class="mono">01453 544632</span>. The tightest bottleneck on this plan.');
+    if(uses('Starvale Farm') || uses('Hideaway Horton'))
+      items.push('<b>Horton &mdash; Starvale or Hideaway.</b> <span class="mono">07786 962913</span> / '+
+        '<span class="mono">07808 912788</span>. Neither has a website, so confirm they are trading '+
+        'before planning a day that ends there.');
+    if(uses('Lansdown Campsite'))
+      items.push('<b>Lansdown Campsite &mdash; is the tent field open on your dates?</b> '+
+        '<span class="mono">07534 894999</span>. Several listings call it summer-only. If it is shut, '+
+        'Day '+V.days.length+' grows and the last day shrinks to a stroll.');
+    if(V.arrive.mode==='bus')
+      items.push('<b>Check your start day.</b> The Y8 bus from Yate to Wotton runs Monday to Saturday '+
+        'only, so this version cannot start on a Sunday.');
+    host.innerHTML = items.map(function(t){ return '<li>'+t+'</li>'; }).join('');
+  }
   function renderStats(){
     document.getElementById('s-dist').innerHTML = V.total.toFixed(1)+' <small>mi</small>';
     document.getElementById('s-asc').innerHTML  = '~'+(Math.round(V.ascent/10)*10).toLocaleString()+' <small>m</small>';
-    document.getElementById('s-days').textContent = V.days.length;
+    document.getElementById('s-days').innerHTML =
+      V.days.map(function(d){ return d.mi.toFixed(1); }).join(' <small>/</small> ')+' <small>mi</small>';
     document.getElementById('s-long').innerHTML = V.longest.toFixed(1)+' <small>mi</small>';
     document.getElementById('s-nights').textContent = V.nights;
     document.getElementById('s-start').textContent = V.stops[0].name;
